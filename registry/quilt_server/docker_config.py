@@ -9,14 +9,14 @@ SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:testing@db/packages'
 
 AUTH_PROVIDER = os.getenv('AUTH_PROVIDER', 'quilt')
 
-CATALOG_URL = 'http://localhost:3000'
+CATALOG_URL = os.environ['CATALOG_URL'] # 'http://localhost:3000'
 
 REGISTRY_URL = os.environ['REGISTRY_URL']
 
 AWS_ACCESS_KEY_ID = 'fake_id'
 AWS_SECRET_ACCESS_KEY = 'fake_secret'
 
-S3_ENDPOINT = 'http://s3:5001'
+S3_ENDPOINT = os.environ['S3_ENDPOINT_URL'] # 'http://s3:5001'
 PACKAGE_BUCKET_NAME = 'package'
 
 SQLALCHEMY_ECHO = True

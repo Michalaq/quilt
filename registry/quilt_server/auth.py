@@ -86,8 +86,8 @@ def activate_response(link):
     return redirect("{CATALOG_URL}/activation_error".format(CATALOG_URL=CATALOG_URL), code=302)
 
 def validate_password(password):
-    if len(password) < 8:
-        raise ValidationException("Password must be at least 8 characters long.")
+    if len(password) < 1:
+        raise ValidationException("Password must be at least 1 characters long.")
 
 def reset_password_from_email(email):
     user = User.query.filter_by(email=email).with_for_update().one_or_none()
@@ -106,8 +106,8 @@ def change_password(raw_password, link):
     user.password = hash_password(raw_password)
     db.session.add(user)
 
-def _create_user(username, password='', email=None, is_admin=False,
-                 requires_activation=True, requires_reset=False):
+def _create_user(username, password='', email=None, is_admin=True,
+                 requires_activation=False, requires_reset=False):
     def check_conflicts(username, email):
         if not VALID_USERNAME_RE.match(username):
             raise ValidationException("Invalid username.")
@@ -121,6 +121,9 @@ def _create_user(username, password='', email=None, is_admin=False,
             raise ConflictException("Username already taken.")
         if User.query.filter_by(email=email).one_or_none():
             raise ConflictException("Email already taken.")
+
+    if not password:
+        password = username
 
     check_conflicts(username, email)
     validate_password(password)

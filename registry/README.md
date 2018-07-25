@@ -1,5 +1,17 @@
 ![python 3.5,_3.6](https://img.shields.io/badge/python-3.5,_3.6-blue.svg)
 
+# Unofficial edits:
+
+It's a modified version of quilt, optimized for ease of use and testing. Run with:
+
+```bash
+ DEPLOY\_URL=your-ip docker-compose up
+```
+
+Your clients should be able to access your-ip. Don't use localhost (although maybe it works after my changes idk).
+
+Stuff below is mostly irrelevant and not entirely true or simply false.
+
 # Quilt registry
 The registry stores package data, meta-data, and controls permissions.
 

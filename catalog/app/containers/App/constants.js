@@ -8,8 +8,6 @@ export const initialState = fromJS({});
 export const DEFAULT_LOCALE = 'en';
 
 // TODO: move to config
-export const intercomAppId = 'eprutqnr';
-
 export const REDUX_KEY = 'app/App';
 
 export const GET_LOG = 'app/Profile/GET_LOG';

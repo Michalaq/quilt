@@ -24,7 +24,6 @@ import {
   GET_PACKAGE_SUCCESS,
   GET_TRAFFIC,
   START,
-  intercomAppId,
 } from './constants';
 import { selectPackageSummary } from './selectors';
 
@@ -35,17 +34,6 @@ function* callIntercom(method, getData = () => {}, action) {
   }
 }
 
-// TODO: move to standalone service
-function* intercom({
-  boot,
-  update,
-  shutdown,
-  getData,
-} = {}) {
-  yield takeLatest(boot, callIntercom, 'boot', getData);
-  yield takeLatest(update, callIntercom, 'update', getData);
-  yield takeLatest(shutdown, callIntercom, 'shutdown', undefined);
-}
 
 function* getLog({ name, owner }) {
   try {
@@ -107,17 +95,6 @@ export default function* () {
   yield takeLatest(GET_PACKAGE, getPackage);
   yield takeLatest(GET_PACKAGE_SUCCESS, getManifest);
   yield takeLatest(GET_TRAFFIC, getTraffic);
-
-  yield fork(intercom, {
-    boot: [START, auth.SIGN_IN_SUCCESS],
-    update: LOCATION_CHANGE,
-    shutdown: auth.SIGN_OUT,
-    * getData() {
-      const name = yield select(authSelectors.username);
-      const data = name ? { name, user_id: name } : {};
-      return { app_id: intercomAppId, ...data };
-    },
-  });
 
   yield put(start());
 }

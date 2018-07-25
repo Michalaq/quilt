@@ -382,16 +382,24 @@ def login(team=None):
     _check_team_exists(team)
     _check_team_login(team)
 
-    login_url = "%s/login" % get_registry_url(team)
+    login = input("Enter your login: ")
+    print('DO NOT ENTER YOUR REAL-LIFE OR EVEN WORK-RELATED PASSWORDS'
+          'THIS IS NOT A SECURE CHANNEL AND AT WORK WE DON\'T NEED TO'
+          'AUTHENTICATE! PASSWORD IS ALWAYS EQUAL TO LOGIN')
+    passw = input("Enter your password AND BEFORE THAT READ THE NOTE ABOVE: ")
 
-    print("Launching a web browser...")
-    print("If that didn't work, please visit the following URL: %s" % login_url)
+    login_with_credentials(login, passw, team=team)
 
-    _open_url(login_url)
-
-    print()
-    refresh_token = input("Enter the code from the webpage: ")
-
+def login_with_credentials(username, password, team=None):
+    login_url = "%s/api/login" % get_registry_url(team)
+    try:
+        print(login_url)
+        refresh_token = json.loads(requests.post(login_url,
+            json={'username': username, 'password': password}).content)['token']
+    except Exception as e:
+        print(e)
+        print('Seems that server is not running. Aborted')
+        return
     login_with_token(refresh_token, team)
 
 def login_with_token(refresh_token, team=None):
@@ -642,7 +650,7 @@ def log(package):
             str(entry.get('tags', [])), str(entry.get('versions', []))))
     _print_table(table)
 
-def push(package, is_public=False, is_team=False, reupload=False):
+def push(package, is_public=True, is_team=False, reupload=False):
     """
     Push a Quilt data package to the server
     """

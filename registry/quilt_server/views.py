@@ -2109,7 +2109,7 @@ def create_user():
         username = data['username']
         _validate_username(username)
         email = data['email']
-        _create_user(username=username, email=email, requires_reset=True, requires_activation=False)
+        _create_user(username=username, email=email, requires_reset=False, requires_activation=False)
         db.session.commit()
         return {}
     except ValidationException as ex:
